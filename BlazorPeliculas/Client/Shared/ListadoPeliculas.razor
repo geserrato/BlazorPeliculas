@@ -1,36 +1,11 @@
-﻿<div>
-    <h3>Películas</h3>
-    @if (Peliculas is null)
-    {
-        @if (Cargando is null)
-        {
-            <text>Cargando...</text>
-        }
-        else
-        {
-            @Cargando
-        }
-    }
-    else if (Peliculas.Count == 0)
-    {
-        @if (NoHayRegistros is null)
-        {
-            <text>No hay registros para mostrar....</text>
-        }
-        else
-        {
-            @NoHayRegistros
-        }
-    }
-    else
-    {
-        <input type="checkbox" @bind="MostrarBotones" />
-        @foreach (var pelcula in Peliculas)
-        {
-            <PeliculaIndividual pelicula="pelcula" EliminarPelicula="EliminarPelicula" MostrarBotones="MostrarBotones" />
-        }
-    }
-</div>
+﻿<h3>Películas</h3>
+<input type="checkbox" @bind="MostrarBotones" />
+<ListadoGenerico Listado="Peliculas">
+    <HayRegistros>
+        <PeliculaIndividual pelicula="context" EliminarPelicula="EliminarPelicula" MostrarBotones="MostrarBotones" />
+    </HayRegistros>
+</ListadoGenerico>
+
 
 @code {
     [Parameter] public List<Pelicula> Peliculas { get; set; }
