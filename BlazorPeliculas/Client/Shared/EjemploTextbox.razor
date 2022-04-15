@@ -1,0 +1,17 @@
+﻿@*
+    Si nosotros aplicamos de izquierda a derecha attributes antes de las propiedades que 
+    podamos settear como default no se veran aplicadas dado que el orden por el cual se 
+    aplican es de derecha a izquierda
+    nota: tener cuidado con el orden en el que aplicamos
+*@
+<input type="text" placeholder="Placeholder por defecto" @attributes="ParametrosAdicionales" />
+
+@code {
+    /*
+     * Esta es la manera en que podemos declarar parametros arbitrarios dentro de alguna etiqueta de HTML
+     * los parametros arbitrarios debemos activar el flag CaptureUnmatchedValues en true y declararlo de tipo IDictionary
+     * el cual recibe una llave y un valor 
+     */
+    [Parameter(CaptureUnmatchedValues =true)]
+    public IDictionary<string, object> ParametrosAdicionales { get; set; }
+}

@@ -1,0 +1,62 @@
+﻿@page "/"
+
+<p>Hola, @UtilidadesString.EnMayuscular(nombre)</p>
+
+<div>
+    <h3>Cargando</h3>
+    <ListadoPeliculas>
+        <Cargando>
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+        </Cargando>
+        <NoHayRegistros>
+            <text>Mensaje personalizado: no hay registros</text>
+        </NoHayRegistros>
+    </ListadoPeliculas>
+
+    <h3>No hay peliculas</h3>
+    <ListadoPeliculas Peliculas="ObtenerPeliculas()">
+        <Cargando>
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+        </Cargando>
+        <NoHayRegistros>
+            <text>Mensaje personalizado: no hay registros</text>
+        </NoHayRegistros>
+    </ListadoPeliculas>
+</div>
+
+
+<div>
+    <h2>Crear Nueva Pelicula</h2>
+    @*
+        De esta manera estamos enviando parametros arbitrarios al componente,
+        Pero tambien podemos hacerlo por medio de una variable por ejemplo
+    *@
+    @*<EjemploTextbox placeholder="Nombre Pelicula" />*@
+
+    @*
+        De la siguiente manera enviamos los parametros arbitrarios por medio de una variable
+    *@
+    <EjemploTextbox @attributes="ParametrosArbitrarios" />
+
+</div>
+
+@code {
+    string nombre = "gerardo";
+
+    public Dictionary<string, object> ParametrosArbitrarios = new Dictionary<string, object>()
+    {
+        { "placeholder", "nuevo placeholder 2" },
+        { "disabled", "true" }
+    };
+
+    private List<Pelicula> ObtenerPeliculas()
+    {
+        return new List<Pelicula>();
+        //return new List<Pelicula>()
+        //{
+        //    new Pelicula() { Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019,7,2)},
+        //    new Pelicula() { Titulo = "Moana", Lanzamiento = new DateTime(2016,11,23)},
+        //    new Pelicula() { Titulo = "Inception", Lanzamiento = new DateTime(2010,7,16)},
+        //};
+    }
+}
