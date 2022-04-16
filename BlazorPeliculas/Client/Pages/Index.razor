@@ -26,6 +26,7 @@
         </ListadoPeliculas>*@
 </div>
 
+<button @onclick="agregarPelicula">Agregar Pelicula</button>
 
 <div>
     <h2>Crear Nueva Pelicula</h2>
@@ -45,6 +46,38 @@
 @code {
     string nombre = "gerardo";
 
+    private List<Pelicula> Peliculas;
+
+    protected override void OnInitialized()
+    {
+        Peliculas = new List<Pelicula>()
+        {
+            new Pelicula() { Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019,7,2)},
+            new Pelicula() { Titulo = "Moana", Lanzamiento = new DateTime(2016,11,23)},
+            new Pelicula() { Titulo = "Inception", Lanzamiento = new DateTime(2010,7,16)},
+        };
+
+        Console.WriteLine($"OnInitialized - Cantidad de peliculas {Peliculas.Count}");
+
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"OnParametersSet - Cantidad de peliculas {Peliculas.Count}");
+    }
+
+    protected override void OnAfterRender(bool primeraRenderizacion)
+    {
+        Console.WriteLine($"OnAfterRender: Primera vez {primeraRenderizacion}");
+    }
+
+    protected override bool ShouldRender()
+    {
+         Console.WriteLine($"ShouldRender");
+        return true;
+    }
+
     public Dictionary<string, object> ParametrosArbitrarios = new Dictionary<string, object>()
     {
         { "placeholder", "nuevo placeholder 2" },
@@ -52,12 +85,17 @@
     };
 
     private List<Pelicula> ObtenerPeliculas()
-    { 
+    {
         return new List<Pelicula>()
         {
             new Pelicula() { Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019,7,2)},
             new Pelicula() { Titulo = "Moana", Lanzamiento = new DateTime(2016,11,23)},
             new Pelicula() { Titulo = "Inception", Lanzamiento = new DateTime(2010,7,16)},
         };
+    }
+
+    void agregarPelicula()
+    {
+        Peliculas.Add(new Pelicula() { Titulo = "Nueva Pelicula", Lanzamiento = DateTime.Today });
     }
 }
