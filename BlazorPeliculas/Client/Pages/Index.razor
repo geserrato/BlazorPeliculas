@@ -1,10 +1,11 @@
 ﻿@page "/"
+@inject IRepositorio _repositorio
 
-<p>Hola, @UtilidadesString.EnMayuscular(nombre)</p>
+@*<p>Hola, @UtilidadesString.EnMayuscular(nombre)</p>*@
 
 <div>
-    <h3>Cargando</h3>
-    <ListadoPeliculas Peliculas="ObtenerPeliculas()" />
+    <h3>Peliculas</h3>
+    <ListadoPeliculas Peliculas="Peliculas" />
 
     @*<ListadoPeliculas>
         <Cargando>
@@ -26,10 +27,7 @@
         </ListadoPeliculas>*@
 </div>
 
-<button @onclick="agregarPelicula">Agregar Pelicula</button>
-
 <div>
-    <h2>Crear Nueva Pelicula</h2>
     @*
         De esta manera estamos enviando parametros arbitrarios al componente,
         Pero tambien podemos hacerlo por medio de una variable por ejemplo
@@ -39,63 +37,18 @@
     @*
         De la siguiente manera enviamos los parametros arbitrarios por medio de una variable
     *@
-    <EjemploTextbox @attributes="ParametrosArbitrarios" />
+    @* <EjemploTextbox @attributes="ParametrosArbitrarios" /> *@
 
 </div>
 
 @code {
-    string nombre = "gerardo";
-
     private List<Pelicula> Peliculas;
-
     protected override void OnInitialized()
     {
-        Peliculas = new List<Pelicula>()
-        {
-            new Pelicula() { Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019,7,2)},
-            new Pelicula() { Titulo = "Moana", Lanzamiento = new DateTime(2016,11,23)},
-            new Pelicula() { Titulo = "Inception", Lanzamiento = new DateTime(2010,7,16)},
-        };
+        Peliculas = _repositorio.ObtenerPeliculas();
 
         Console.WriteLine($"OnInitialized - Cantidad de peliculas {Peliculas.Count}");
 
         base.OnInitialized();
-    }
-
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine($"OnParametersSet - Cantidad de peliculas {Peliculas.Count}");
-    }
-
-    protected override void OnAfterRender(bool primeraRenderizacion)
-    {
-        Console.WriteLine($"OnAfterRender: Primera vez {primeraRenderizacion}");
-    }
-
-    protected override bool ShouldRender()
-    {
-         Console.WriteLine($"ShouldRender");
-        return true;
-    }
-
-    public Dictionary<string, object> ParametrosArbitrarios = new Dictionary<string, object>()
-    {
-        { "placeholder", "nuevo placeholder 2" },
-        { "disabled", "true" }
-    };
-
-    private List<Pelicula> ObtenerPeliculas()
-    {
-        return new List<Pelicula>()
-        {
-            new Pelicula() { Titulo = "Spider-Man: Far From Home", Lanzamiento = new DateTime(2019,7,2)},
-            new Pelicula() { Titulo = "Moana", Lanzamiento = new DateTime(2016,11,23)},
-            new Pelicula() { Titulo = "Inception", Lanzamiento = new DateTime(2010,7,16)},
-        };
-    }
-
-    void agregarPelicula()
-    {
-        Peliculas.Add(new Pelicula() { Titulo = "Nueva Pelicula", Lanzamiento = DateTime.Today });
     }
 }
