@@ -11,27 +11,27 @@
         <InputCheckbox @bind-Value="@Pelicula.EnCartelera" />
         <ValidationMessage For="@(() => Pelicula.EnCartelera)" />
     </div>
-     <div class="mb-3">
+    <div class="mb-3">
         <label class="form-label">Trailer</label>
         <InputText class="form-control" @bind-Value="@Pelicula.Trailer" />
         <ValidationMessage For="@(() => Pelicula.Trailer)" />
     </div>
-     <div class="mb-3">
+    <div class="mb-3">
         <label class="form-label">Fecha Lanzamiento</label>
         <InputDate class="form-control" @bind-Value="@Pelicula.Lanzamiento" />
         <ValidationMessage For="@(() => Pelicula.Lanzamiento)" />
     </div>
     <div class="form-group form-markdown">
-        <InputMarkDown @bind-Value="@Pelicula.Resumen" 
-                        For="@(() => Pelicula.Resumen)"
-                        Label="Resumen"/>
+        <InputMarkDown @bind-Value="@Pelicula.Resumen"
+                       For="@(() => Pelicula.Resumen)"
+                       Label="Resumen" />
     </div>
-     <div class="form-group mb-3">
+    <div class="form-group mb-3">
         <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" ImagenURL="@posterTemporal" />
     </div>
 
     <div class="mb-3">
-         <label class="form-label">Generos</label>
+        <label class="form-label">Generos</label>
         <SelectorMultiple Seleccionados="Seleccionados" NoSeleccionados="NoSeleccionados" />
     </div>
 
@@ -49,8 +49,20 @@
 
     protected override void OnInitialized()
     {
-        Seleccionados = GenerosSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(),x.Nombre)).ToList();
-        NoSeleccionados = GenerosNoSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(),x.Nombre)).ToList();
+        Seleccionados.AddRange(from Genero genero in GenerosSeleccionados
+                                 select new SelectorMultipleModel
+                                 {
+                                     LLave = genero.Id.ToString(),
+                                     Valor = genero.Nombre
+                                 });
+
+        NoSeleccionados.AddRange(from Genero genero in GenerosNoSeleccionados
+                                 select new SelectorMultipleModel
+                                 {
+                                     LLave = genero.Id.ToString(),
+                                     Valor = genero.Nombre
+                                 });
+
         if (!string.IsNullOrWhiteSpace(Pelicula.Poster))
         {
             posterTemporal = Pelicula.Poster;
@@ -61,6 +73,6 @@
 
     private void ImagenSeleccionada(string imagenBase64)
     {
-        Pelicula.Poster = imagenBase64;  
+        Pelicula.Poster = imagenBase64;
     }
 }
