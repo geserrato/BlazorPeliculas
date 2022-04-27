@@ -1,8 +1,12 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using BlazorPeliculas.Server.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+IConfiguration configuration = builder.Configuration;
 
 // Add services to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

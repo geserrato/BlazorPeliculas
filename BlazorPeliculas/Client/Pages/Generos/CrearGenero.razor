@@ -1,12 +1,23 @@
 ﻿@page "/generos/crear"
-<h3>CrearGenero</h3>
+@inject IRepositorio repositorio
+@inject NavigationManager navigationManager
+<h3>Crear Genero</h3>
 
-<FormularioGenero OnValidSubmit="Crear"  Genero="Genero"/>
+<FormularioGenero OnValidSubmit="Crear" Genero="Genero" />
 
 @code {
     private Genero Genero = new Genero();
-    private void Crear()
+    private async void Crear()
     {
-        
+        var httpResponse = await repositorio.Post("api/Generos", Genero);
+        if (httpResponse.Error)
+        {
+            var body = await httpResponse.HttpResponseMessage.Content.ReadAsStreamAsync();
+            Console.WriteLine(body);
+        }
+        else
+        {
+            navigationManager.NavigateTo("/generos");
+        }
     }
 }

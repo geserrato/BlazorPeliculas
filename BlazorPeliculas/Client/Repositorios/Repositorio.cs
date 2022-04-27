@@ -1,9 +1,25 @@
 ﻿using BlazorPeliculas.Shared.Entidades;
+using System.Text;
+using System.Text.Json;
 
 namespace BlazorPeliculas.Client.Repositorios;
 
 public class Repositorio : IRepositorio
 {
+    private readonly HttpClient _httpClient;
+    public Repositorio(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<HttpResponseWrapper<object>> Post<T>(string url, T enviar)
+    {
+        var json = JsonSerializer.Serialize(enviar);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync(url, content);
+        return new HttpResponseWrapper<object>(null, !response.IsSuccessStatusCode, response);
+    }
+
     public List<Pelicula> ObtenerPeliculas()
     {
         return new List<Pelicula>()
